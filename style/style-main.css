@@ -105,7 +105,7 @@ table {
     float:left;
 }
 
-@media only screen and (max-width: 40em){
+@media only screen and (max-device-width: 700px) and (orientation: portrait){
     .menuButton {
         /*display: block !important;*/
         float: none !important;
