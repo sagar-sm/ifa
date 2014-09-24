@@ -96,16 +96,16 @@ table {
 
 /* Main menu */
 .menuContainer {
-    position:relative;
+    display: block;
+    float: left;
     width:242px;
-    height: 398px; /*make it relative if you want to make the header responsive */
+    height: 398px;
     top: 0px;
-    float:left;
 }
 
-@media only screen and (max-device-width: 800px) {
+@media only screen and (max-width: 640px){
     .menuContainer {
-        width: 80% !important;
+        width: 85% !important;
         height:100% !important;
     }
     .menuButton {
@@ -125,12 +125,6 @@ table {
 
     .backdrop {
         opacity: 0.5 !important;
-    }
-    #maximage {
-        display: none !important;
-    }
-    body {
-        background: url(../images/frontpage01.jpg) !important;
     }
 }
 
