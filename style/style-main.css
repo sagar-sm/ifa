@@ -105,12 +105,20 @@ table {
     float:left;
 }
 
-@media only screen and (max-device-width: 700px) and (orientation: portrait){
+@media only screen and (max-width: 700px){
+    .menuContainer {
+        width: 80% !important;
+        height:100% !important;
+    }
     .menuButton {
         /*display: block !important;*/
         float: none !important;
         width: 100% !important;
+        height: 7rem !important;
         vertical-align: center !important;
+    }
+    .menuText {
+        font-size: 1.4rem !important;
     }
 
     .text {
