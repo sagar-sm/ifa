@@ -103,7 +103,7 @@ table {
     float:left;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-device-width: 800px) {
     .menuContainer {
         width: 80% !important;
         height:100% !important;
