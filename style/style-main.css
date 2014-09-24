@@ -103,7 +103,7 @@ table {
     float:left;
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 800px) {
     .menuContainer {
         width: 80% !important;
         height:100% !important;
@@ -127,9 +127,11 @@ table {
         opacity: 0.5 !important;
     }
     #maximage {
-        display: none;
+        display: none !important;
     }
-
+    body {
+        background: url(../images/frontpage01.jpg) !important;
+    }
 }
 
 .menuButton {
