@@ -1,0 +1,10 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body
+{
+    background: url('http://farm3.staticflickr.com/2832/12303719364_c25cecdc28_b.jpg') fixed;
+    background-size: cover;
+    padding: 0;
+    margin: 0;
+}

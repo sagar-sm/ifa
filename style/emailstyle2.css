@@ -1,0 +1,59 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	background-color: #ccc;
+}
+
+.mainWrapper {
+	width: 675px;
+	margin: 0px auto;
+
+}
+
+
+.mainContent {
+    width: 600px;
+    margin-left:37px;
+	margin-top:-25px;
+	padding-top:-25px;
+	padding-bottom:0px;
+    background-color: #ffffff;
+	
+}
+
+
+.mainContent .content {
+    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-size: 100%;
+    color: #000;
+    padding: 5px 5px 10px 10px;
+    line-height: 1.2;
+	text-align:center;
+}
+
+.mainContent .caption {
+    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-size: 90%;
+	text-shadow: 1px 1px 1px #778793;
+    color: #000;
+    padding: 0px 0px 0px 0px;
+	text-align:center;
+}
+
+.mainContent .imagecontent {   
+    padding: 0px 0px 0px 0px;
+}
+
+.mainContent .content a {
+    color:#7a98ab;
+    text-decoration:none;
+}
+
+.mainContent .heading {   
+    padding: 0px 0px 0px 0px;
+	text-align:center;
+	color:#7a3236;
+	font-size: 150%;
+	font-weight:bold;
+}
