@@ -1,7 +1,23 @@
 @charset "UTF-8";
 /* CSS Document */
 
+@font-face {  
+  font-family: Gotham;  
+  font-weight: 300;
+  src: url( '../font/Gotham-Light.otf' );  
+}
 
+@font-face {  
+  font-family: Gotham;  
+  font-weight: 400;
+  src: url( '../font/Gotham-Book.otf' );  
+}
+
+@font-face {  
+  font-family: Gotham;
+  font-weight: 600;  
+  src: url( '../font/Gotham-Bold.otf' );  
+}
 
 *{
     font-family: Gotham, 'helvetica', sans-serif !important;
@@ -59,23 +75,7 @@ table {
 * IFA CONTENT PAGE CSS
 */
 
-@font-face {  
-  font-family: Gotham;  
-  font-weight: lighter;
-  src: url( '../font/Gotham-Light.otf' );  
-}
 
-@font-face {  
-  font-family: Gotham;  
-  font-weight: normal;
-  src: url( '../font/Gotham-Book.otf' );  
-}
-
-@font-face {  
-  font-family: Gotham;
-  font-weight: bold;  
-  src: url( '../font/Gotham-Bold.otf' );  
-}
 
 
 .menuContainer {
@@ -129,7 +129,9 @@ table {
     color: #fff;
     font-family: Gotham, Helvetica, sans-serif;
     text-align:center;
-    display:table;   
+    display:table;
+
+    transition: background-color 0.4s ease-in-out;
 }
 
 .menuButton:hover {
@@ -180,7 +182,7 @@ table {
 	display: table-cell;
 	font-size: 0.77em;
 	text-shadow: 1px 1px 1px #333;
-	font-weight:normal;
+	font-weight:400;
 }
 
 .IFALogoContainer {
@@ -199,12 +201,15 @@ table {
 .button {
     font-size: 1em;
     padding: 10px;
-    background: rgba(176,220,247,0.75);
+    border-style: solid;
+    border-width: 2px;
+    border-color: #fff;
     font-size: 0.9em !important;
     margin: 0 0 10px 0 !important;
     display: inline-block;
     text-decoration: none !important;
     text-transform: uppercase !important;
+    transition: background 0.3s;
 }
 
 .insetlink {
@@ -213,7 +218,7 @@ table {
 
 .button:hover {
     color: #fff !important;
-    background: rgb(122,152,171) !important;
+    background: rgba(255,255,255,0.2); !important;
     transition: background 0.3s;
 }
 
@@ -232,14 +237,14 @@ table {
 
 .text .heading {
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 600;
     color: #fff;
     margin-bottom: 20px;
     text-transform: uppercase;
 }
 
 .text .quote {
-    font-weight: lighter;
+    font-weight: 300;
     font-size: 1.7em;
     color: #fff;
     margin-bottom: 20px;
@@ -247,15 +252,16 @@ table {
 }
 
 .text .smallerquote {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1.45em;
     line-height: 1.25;
     color: #fff;
-    margin-bottom: 20px;    text-align:left;
+    margin-bottom: 20px;    
+    text-align:left;
 }
 
 .text .content {
-    font-weight: normal;
+    font-weight: 400;
     font-size: 1.2em;
     line-height: 1.2em;
     color: #fff;

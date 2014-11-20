@@ -1,6 +1,25 @@
 @charset "UTF-8";
 /* CSS Document */
 
+
+@font-face {  
+  font-family: Gotham;  
+  font-weight: 300;
+  src: url( '../font/Gotham-Light.otf' );  
+}
+
+@font-face {  
+  font-family: Gotham;  
+  font-weight: 400;
+  src: url( '../font/Gotham-Book.otf' );  
+}
+
+@font-face {  
+  font-family: Gotham;
+  font-weight: 600;  
+  src: url( '../font/Gotham-Bold.otf' );  
+}
+
 /*Reset CSS for coherence across multiple browsers*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -62,11 +81,6 @@ table {
 * FOR ALL THE MEASUREMENTS I HAVE USED %, PLEASE REFER TO HOW TO USE % BEFORE MAKING CHANGES TO THE MEASUREMENTS
 * IFA CONTENT PAGE CSS
 */
-
-@font-face {  
-  font-family: myGotham;  
-  src: url( '../font/Gotham-Light.otf' );  
-}
 
 body {
 	background-color: #ecede7;
@@ -156,7 +170,6 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
     width: 242px;
     height: relative; /*make it relative if you want to make the header responsive OR 398px */
     top: 0px;
-	bottom: -.5px;
     right: -1px; /* To take care of the offset of the right-side buttons due to margin-right and an unknown offset caused by shifting the div to the right*/
 }
 
@@ -168,200 +181,58 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
     margin: 0 1px 1px 0;
     text-decoration:none;
     color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
+    font-family: Gotham, Helvetica, sans-serif;
     text-align:center;
-	display:table;
-	background: rgb(122,152,171); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(122,152,171,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);					
+    display:table;
+    transition: background-color 0.4s ease-in-out;
+}
+
+.menuButton:hover {
+    background-color: rgba(0,0,0,0) !important;
+    transition: background-color 0.4s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out;
 }
 
 .menuHover a:hover {
 	background: rgba(0,0,0,0);
 }
 
-
-.menuButton2 {
-    position:relative;
-    width: 120px;
-    height: 77px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
-	background: rgb(176,220,247); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(176,220,247,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-		
-}
-
-
-
-.menuButton3 {
-    position:relative;
-    width: 120px;
-    height: 77px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
-	background: rgb(176,220,247);  /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(176,220,247,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-	
-}
-
-
-.menuButton4 {
-    position:relative;
-    width: 120px;
-    height: 77px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
-	background: rgb(247,215,176); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(247,215,176,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-
-}
-
-
-.menuButton5 {
-    position:relative;
-    width: 120px;
-    height: 77px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
-	background: rgb(247,215,176); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(247,215,176,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-	
-}
-
-
-.menuButton6 {
-    position:relative;
-    width: 120px;
-    height: 77px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
-	background: rgb(236,237,231); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(236,237,231,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-	
-}
-
-
-.menuButton7 {
-    position:relative;
-    width: 120px;
-    height: 77px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
-	background: rgb(236,237,231); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(236,237,231,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-
-}
-
-
-.menuButton8 {
-    position:relative;
-    width: 120px;
-    height: 77px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
-	background: rgb(176,220,247); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(176,220,247,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-		
-}
-
-
-.menuButton9 {
-    position:relative;
-    width: 120px;
-    height: 78px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
-	background: rgb(176,220,247); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(176,220,247,0.72);
-	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-}
-
-
-.menuButton10 {
-    position:relative;
-    width: 120px;
-    height: 78px;
-    float:left;
-    margin: 0 1px 1px 0;
-    text-decoration:none;
-    color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
-    text-align:center;
-	display:table;
+/* COLORS */
+#button1, #button10 {
 	background: rgb(122,152,171); /* this is the FALLBACK for old versions of IE: 6,7,8 */
-	background: rgba(122,152,171,0.72);
+	background: rgba(122,152,171,0.75);
 	
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
-	filter: alpha(opacity=72);	
-
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
+	filter: alpha(opacity=75);	
 }
 
+#button2, #button3, #button8, #button9 {
+
+	background: rgb(176,220,247); /* this is the FALLBACK for old versions of IE: 6,7,8 */
+	background: rgba(176,220,247,0.75);
+	
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
+	filter: alpha(opacity=75);	
+}
+
+#button4, #button5 {
+	background: rgb(247,215,176); /* this is the FALLBACK for old versions of IE: 6,7,8 */
+	background: rgba(247,215,176,0.75);
+	
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
+	filter: alpha(opacity=75);	
+}
+
+
+#button6, #button7 {
+	background: rgb(236,237,231); /* this is the FALLBACK for old versions of IE: 6,7,8 */
+	background: rgba(236,237,231,0.75);
+	
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=72)"; /* this is needed for transparency in old versions of IE: 6,7,8 */
+	filter: alpha(opacity=75);	
+	
+}
+/* ------ */
 
 .menuContainer .menuText {
     position:relative;
@@ -369,7 +240,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 	display: table-cell;
 	font-size: 12px;
 	text-shadow: 1px 1px 1px #333;
-	font-weight:bold;
+	font-weight: 400;
 }
 
 
@@ -727,7 +598,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 	display: table-cell;
 	font-size: 300%;
 	text-shadow: 1px 1px 1px #333;
-	font-weight:bold;
+	font-weight:400;
 }
 
 .gridContainer .buttonSmallText {
@@ -735,8 +606,8 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 	vertical-align:middle;
 	display: table-cell;
 	font-size: 200%;
-	text-shadow: 2px 2px 2px #333;
-	font-weight:bold;
+	text-shadow: 1px 1px 1px #333;
+	font-weight:400;
 }
 
 .gridItem {
@@ -747,7 +618,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
     margin: 0 1px 1px 0;
     text-decoration:none;
     color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
+    font-family: Gotham, Helvetica, sans-serif;
     text-align:center;
 	display:table;
 	background: rgb(236,237,231);
@@ -765,7 +636,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
     margin: 0 1px 1px 0;
     text-decoration:none;
     color: #fff;
-    font-family: myGotham, Helvetica, sans-serif;
+    font-family: Gotham, Helvetica, sans-serif;
     text-align:center;
 	display:table;
 	background: rgb(236,237,231);
