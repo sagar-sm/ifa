@@ -265,7 +265,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 
 /* CSS for the main content of this page*/
 .mainContent {
-	font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+	font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
 	font-size: 90%;
     width: 698px;
     margin-right:1px;
@@ -290,7 +290,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 }
 
 .mainContent .heading {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 200%;
     color:#7a3236;
     padding: 10px 10px 10px 10px;
@@ -298,7 +298,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 }
 
 .mainContent .headingBROCHURE {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 150%;
     color:#000;
     padding: 10px 10px 5px 10px;
@@ -306,7 +306,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 }
 
 .mainContent .headingANNOUNCE {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 140%;
     color:#7a3236;
     padding: 10px 10px 5px 10px;
@@ -315,7 +315,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 
 
 .mainContent .headingexpanding {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 150%;
     color:#7a3236;
     padding: 10px 10px 10px 10px;
@@ -333,7 +333,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 }
 
 .mainContent .headingexpandingBlue {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 150%;
     color:#7a98ab;
     padding: 10px 10px 10px 10px;
@@ -341,7 +341,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 }
 
 .mainContent .headingbyline {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 100%;
     color:#7a3236;
     padding: 0px 0px 0px 0px;
@@ -355,28 +355,28 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 
 .mainContent .subheading {
     color:#000;
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-weight:600;
     padding: 0 10px;
 }
 
 .mainContent .subheadingItalic {
     color: #000;
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-style:italic;
     padding: 0 10px;
 }
 
 .mainContent .content {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 100%;
     color: #000;
     padding: 0px 10px 10px 10px;
-    line-height: 1.2;
+    line-height: 1.33em;
 }
 
 .mainContent .caption {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 80%;
     color: #000;
     padding: 5px 10px 0px 10px;
@@ -390,7 +390,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 
 
 .mainContent .contentBROCHURE {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 100%;
     color: #fff;
     padding: 10px 10px 10px 10px;
@@ -711,9 +711,10 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 
 
 .card .heading {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 90%;
     color:#7a3236;
+    text-transform: capitalize;
     padding: 10px 0 1px 10px;
     /*font-kerning:-1000px;*/
 }
@@ -742,7 +743,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 
 
 .cardhighlight .heading {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 90%;
     color:#7a3236;
     padding: 10px 0 3px 10px;
@@ -750,7 +751,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 }
 
 .cardvideo .heading {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 90%;
     color:#7a3236;
     padding: 10px 0 5px 10px;
@@ -758,7 +759,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 }
 
 .cardCC .heading {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 90%;
     color:#7a3236;
     padding: 10px 0 5px 10px;
@@ -766,21 +767,21 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 }
 
 .card .content {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 80%;
     color: #000;
     padding: 10px 5px 10px 15px;
 }
 
 .card .contentspecial {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 80%;
     color: #000;
     padding: 5px 0px 5px 15px;
 }
 
 .card .caption {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 70%;
     color: #000;
     padding: 0px 10px 10px 0px;
@@ -788,7 +789,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 
 
 .cardvideo .content {
-    font-family: 'Helvetica-Nueue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica-Neue', 'Helvetica', sans-serif;
     font-size: 80%;
     color: #000;
     padding: 0px 0px 10px 15px;
@@ -798,6 +799,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
 .card a {
     color:#7a98ab;
     text-decoration:none;
+    line-height: 1.33em;
 }
 
 .cardCC a {
