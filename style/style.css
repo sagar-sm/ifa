@@ -394,7 +394,7 @@ input#button {border: 0px; background: #ecede7; cursor:pointer; background-image
     font-size: 100%;
     color: #fff;
     padding: 10px 10px 10px 10px;
-    line-height: 1.2;
+    line-height: 1.33em;
 }
 
 .mainContent .content a {
