@@ -1,3 +1,21 @@
 .full-width {
   width: 940px !important;
 }
+
+.graticule {
+  fill: none;
+  display: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.land {
+  fill: rgba(170,170,170,0.7);
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
