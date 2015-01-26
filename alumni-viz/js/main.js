@@ -58,8 +58,17 @@ window.onload = function(){
   }
 
   function loadAlumni(err, alumni) {
-    console.log("hi");
-    console.log(alumni);
+    svg.selectAll("circle.point")
+      .data(alumni)
+      .enter()
+      .append("circle")
+      .attr("r",3)
+      .attr('class', 'point')
+      .attr("transform", function(d) {
+        d.lat = isNaN(d.lat) ? 0 : d.lat;
+        d.lon = isNaN(d.lon) ? 0 : d.lon;
+        return "translate(" + projection([d.lon,d.lat]) + ")";
+      });
   }
 
   d3.select(self.frameElement).style("height", height + "px");
