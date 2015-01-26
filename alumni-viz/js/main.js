@@ -21,17 +21,46 @@ window.onload = function(){
     .attr("class", "graticule")
     .attr("d", path);
 
-  d3.json("./data/world-110m.json", function(error, world) {
+
+  queue()
+    .defer(d3.json, "./data/world-110m.json")
+    .defer(function(url, callback){
+      d3.csv(url, function(d){
+        return {
+          category: d.Category,
+          name: d.Name,
+          aptDate: new Date(+d.AppointmentDate, 0, 1),
+          lat: +d.La,
+          lon: +d.Lo,
+          place: d.Place,
+          notes: d.Notes,
+          degree: d.Degree
+        };
+      }, function(error, rows){
+        callback(error, rows);
+      });
+    }, "./data/mapping-alumni.csv")
+    .await(function(err, world, alumni){
+      loadWorld(err, world);
+      loadAlumni(err, alumni);
+    });
+
+  function loadWorld(err, world) {
     svg.insert("path", ".graticule")
       .datum(topojson.feature(world, world.objects.land))
       .attr("class", "land")
       .attr("d", path);
 
     svg.insert("path", ".graticule")
-        .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
-        .attr("class", "boundary")
-        .attr("d", path);
-  });
+      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+      .attr("class", "boundary")
+      .attr("d", path);
+  }
+
+  function loadAlumni(err, alumni) {
+    console.log("hi");
+    console.log(alumni);
+  }
 
   d3.select(self.frameElement).style("height", height + "px");
 }
