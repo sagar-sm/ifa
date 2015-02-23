@@ -2,6 +2,10 @@
   width: 940px !important;
 }
 
+.contentWrapper {
+  position: absolute;
+}
+
 .graticule {
   fill: none;
   display: none;
