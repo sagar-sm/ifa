@@ -1,9 +1,10 @@
 window.onload = function(){
 
 
-  L.mapbox.accessToken = 'pk.eyJ1Ijoibnl1aWZhIiwiYSI6ImFMUVFBNk0ifQ.5Vvo7b-MVw8SXemFz4jQtw';
-  var map = L.mapbox.map('map', 'nyuifa.l3919np9')
-    .setView([0, 0], 2);
+  L.mapbox.accessToken = 'pk.eyJ1Ijoic3NtIiwiYSI6IkFsRTJFNDAifQ.k7_1MScHyFU44SbXlC3x8w';
+  var map = L.mapbox.map('map', 'ssm.ld63nlnh');
+  map.locate({setView: true, maxZoom: 10});
+  map.setView([0,0], 2);
 
   var width = 940,
     height = 480;
