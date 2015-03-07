@@ -2,9 +2,8 @@ window.onload = function(){
 
 
   L.mapbox.accessToken = 'pk.eyJ1Ijoic3NtIiwiYSI6IkFsRTJFNDAifQ.k7_1MScHyFU44SbXlC3x8w';
-  var map = L.mapbox.map('map', 'ssm.ld63nlnh');
-  map.locate({setView: true, maxZoom: 10});
-  map.setView([0,0], 2);
+  var map = L.mapbox.map('map', 'ssm.ld63nlnh')
+    .setView([0,0], 2);
 
   var width = 940,
     height = 480;
