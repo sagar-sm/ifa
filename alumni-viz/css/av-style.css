@@ -23,3 +23,10 @@
   stroke: #fff;
   stroke-width: .5px;
 }
+
+#map { 
+  position:absolute !important; 
+  top:0; bottom:0; 
+  width:100%; 
+  height:390px;
+}
