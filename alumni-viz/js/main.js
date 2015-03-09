@@ -3,7 +3,7 @@ window.onload = function(){
 
   L.mapbox.accessToken = 'pk.eyJ1Ijoic3NtIiwiYSI6IkFsRTJFNDAifQ.k7_1MScHyFU44SbXlC3x8w';
   var map = L.mapbox.map('map', 'ssm.ld63nlnh')
-    .setView([0,0], 3);
+    .setView([0,0], 2);
 
 
 
@@ -102,18 +102,13 @@ window.onload = function(){
         .enter()
         .append("circle")
         .attr("r",3)
-        .attr('class', 'point')
-        .transition().duration(5000)
+        .attr("class", "point")
+        .transition()
         .attr("cx", function(d) {
           return d.x;
         })
         .attr("cy", function(d) {
           return d.y;
-        })
-        .attr('style', function(d) {
-          var c = map.latLngToLayerPoint(new L.LatLng(0,0));
-          if((d.x === c.x) && (d.y === c.y))
-            return "display: none";
         });
 
       g.selectAll("circle.point")
@@ -124,6 +119,9 @@ window.onload = function(){
         })
         .attr("cy", function(d) {
           return d.y;
+        })
+        .style("opacity", function(d){
+          return d.lat || d.lon;
         });
     }
 

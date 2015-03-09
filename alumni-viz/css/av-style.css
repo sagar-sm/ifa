@@ -24,9 +24,11 @@
   stroke-width: .5px;
 }
 
-#map { 
-  position:absolute; 
-  top:0; bottom:0; 
+#map {
   width:940px; 
   height:390px;
+}
+
+.invisible {
+  display: none;
 }
