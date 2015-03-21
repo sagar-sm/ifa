@@ -4,14 +4,19 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="cache-control" content="no-cache">
+
   
   <!--CSS links-->
+  <link rel="stylesheet" type="text/css" href="./css/foundation.min.css">
+  <link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.min.css">
   <link href="../style/style.css" rel="stylesheet" type="text/css"/>
   <link href="./css/av-style.css" rel="stylesheet" type="text/css"/>
+  <link href="./css/d3-tip.css" rel="stylesheet" type="text/css"/>
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
+
   
 	<title>Institute of Fine Arts: Alumni Visualization</title>
-    
+
   <script type="text/javascript">
 
     var _gaq = _gaq || [];
@@ -25,13 +30,16 @@
     })();
 
   </script>
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/jquery-ui.min.js"></script>
   <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
-
   <script type="text/javascript" src='./js/d3/d3.min.js'></script>
   <script type="text/javascript" src='./js/d3/topojson.min.js'></script>
   <script type="text/javascript" src='./js/d3/queue.v1.min.js'></script>
+  <script type="text/javascript" src='./js/d3/d3.tip.js'></script>
+  <script type="text/javascript" src="./js/foundation.min.js"></script>
 
-  <script type="text/javascript" src='./js/main.js'></script>
+
 </head>
 
 <body>
@@ -47,17 +55,9 @@
           <a href="http://www.nyu.edu" target="_blank"><img src="../images/NYUlogo.png" alt="NYU Logo"></a>
       </div>
       <div class="mainHeaderContainer">
-        <div id="topsearch">	
-          <form METHOD=get ACTION="http://google.nyu.edu/search" target="_top">
-            <INPUT TYPE="hidden" NAME="site" VALUE="NYUWeb_Main">
-            <INPUT TYPE="hidden" NAME="client" VALUE="NYUWeb_Main">
-            <INPUT TYPE="hidden" NAME="output" VALUE="xml_no_dtd">
-            <INPUT TYPE="hidden" NAME="proxyreload" VALUE="1">
-            <INPUT TYPE="hidden" NAME="proxystylesheet" VALUE="ifa_frontend">
-            <INPUT TYPE="hidden" NAME="sitesearch" VALUE="www.nyu.edu/gsas/dept/fineart">
-            <INPUT class="formreg" id="search" name=q value="">
-            <INPUT TYPE="submit" VALUE="" id="button">
-          </form> 
+        <div id="topsearch" class="ui-widget">
+          <input id="searchbox" placeholder="Search"></input>
+          <input value="" id="button"></input>
         </div>
        <!-- <img src="../images/headerImages/AcademicsHeader1.jpg" alt="The Institute of Fine Arts"/>
         <div class="menuContainer">                  
@@ -82,18 +82,24 @@
     <div class="contentWrapper">
         <!-- All the important content relevant to the page goes here -->
         <div class="mainContent full-width">
-
           <p class="heading">Visualizing IFA's Alumni</p>
-            <p class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+          <div id="meta" class="content">
+            <div id="info"></div>
+            <div class="row-item clearfix" id="categories">
+              <div id="meta-viz"></div>
+              <div id="categories-viz" class="clearfix"></div>
+            </div>
+          </div>
+
+
         </div>
 
 
     </div>
             
     </div>
-   
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+    
+    <script type="text/javascript" src='./js/main.js'></script>
     <script src='../js/toggleContent.js'></script>
       
 </body>
