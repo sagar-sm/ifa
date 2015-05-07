@@ -14,12 +14,14 @@ Array.prototype.unique = function()
 
 $(document).ready(function(){
 
+
   L.mapbox.accessToken = 'pk.eyJ1Ijoic3NtIiwiYSI6IkFsRTJFNDAifQ.k7_1MScHyFU44SbXlC3x8w';
   var map = L.mapbox.map('map', 'ssm.ld63nlnh')
     .setView([0,0], 2);
 
   var svg = d3.select(map.getPanes().overlayPane).append("svg");
   var g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
   var colors = ["#a6cee3",
     "#1f78b4",
     "#b2df8a",
@@ -63,6 +65,7 @@ $(document).ready(function(){
         return {
           category: d.Category ? d.Category : "Miscellaneous",
           name: d.Name,
+          img_url: d.ImageURL ? d.ImageURL : "profile-icon.png" ,
           aptDate: new Date(+d.AppointmentDate, 0, 1),
           lat: +d.La,
           lon: +d.Lo,
@@ -75,9 +78,37 @@ $(document).ready(function(){
       });
     }, "./data/mapping-alumni.csv")
     .await(function(err, alumni){
+      
       var categories = alumni.map(function(a){
+        a.category = a.category.toLowerCase();
         return a.category;
       });
+
+      var catfreq = {};
+
+      alumni.forEach(function(a){
+        if(!catfreq[a.category])
+          catfreq[a.category]=1;
+        else
+          catfreq[a.category]++;
+      });
+
+      var donutData = [];
+
+      Object.keys(catfreq).forEach(function(k){
+        if(k !== "miscellaneous")
+          donutData.push({
+            name: k,
+            count: catfreq[k]
+          });
+      });
+      // donutData.names = Object.keys(catfreq);
+      // donutData.count = [];
+      // Object.keys(catfreq).forEach(function(k){
+      //   donutData.count.push(catfreq[k]);
+      // });
+      console.log(donutData);
+
       categories = categories.unique();
 
       var names = alumni.map(function(a){
@@ -89,19 +120,24 @@ $(document).ready(function(){
         select: function(e, ui){
           var i = names.indexOf(ui.item.value);
           var d = alumni[i];
-          $("#info").html(
-            "<h2 class=\"name\">" + d.name + "</h2>" +
-            "<div class=\"degree\">" + d.degree + "</div>" +
-            "<div class=\"notes\">" + d.notes + "</div>" +
-            "<div class=\"place\">" + d.place + "</div>"
+          $("#alumni-info").html(
+            "<div class=\"large-6 columns\">" +
+              "<img src=\"profile_images/" + d.img_url + "\"></img>" + 
+            "</div>" +
+            "<div class=\"large-6 columns\">" +
+              "<h2 class=\"name\">" + d.name + "</h2>" +
+              "<div class=\"degree\">" + (d.degree? d.degree : "") + "</div>" +
+              "<div class=\"notes\">" + (d.notes? d.notes : "") + "</div>" +
+              "<div class=\"place\">" + (d.place? d.place : "") + "</div>" +
+            "</div>"
           );
         }
       });
 
-      loadAlumni(err, categories, alumni);
+      loadAlumni(err, categories, alumni, donutData);
     });
 
-  function loadAlumni(err, categories, alumni) {
+  function loadAlumni(err, categories, alumni, donutData) {
 
     var alumniDom = alumni;
     var filterSet = categories;
@@ -112,6 +148,8 @@ $(document).ready(function(){
     renderMap();
     renderCat();
     renderMeta();
+    renderBarChart(donutData);
+
 
     map.on("viewreset", renderMap);
 
@@ -123,14 +161,12 @@ $(document).ready(function(){
       });
 
       alumniDom = alumni.filter(function(e){
-        if(filterSet.indexOf(e.category) != -1)
-          return true;
-        else
-          return false;
+        return (filterSet.indexOf(e.category) != -1);
       });
 
       renderMap();
       renderMeta();
+      renderBarChart(donutData);
     });
 
     //renders map and points
@@ -191,11 +227,16 @@ $(document).ready(function(){
           return d.y;
         })
         .on("click", function(d){
-          $("#info").html(
-            "<h2 class=\"name\">" + d.name + "</h2>" +
-            "<div class=\"degree\">" + d.degree + "</div>" +
-            "<div class=\"notes\">" + d.notes + "</div>" +
-            "<div class=\"place\">" + d.place + "</div>"
+          $("#alumni-info").html(
+            "<div class=\"large-6 columns\">" +
+              "<img src=\"profile_images/" + d.img_url + "\"></img>" + 
+            "</div>" +
+            "<div class=\"large-6 columns\">" +
+              "<h2 class=\"name\">" + d.name + "</h2>" +
+              "<div class=\"degree\">" + (d.degree? d.degree : "") + "</div>" +
+              "<div class=\"notes\">" + (d.notes? d.notes : "") + "</div>" +
+              "<div class=\"place\">" + (d.place? d.place : "") + "</div>" +
+            "</div>"
           );
         })
         .on("mouseover", function(d){
@@ -211,7 +252,7 @@ $(document).ready(function(){
         .data(alumniDom) 
         .attr("fill", function(d){
           categories.forEach(function(c, i){
-            if(c.indexOf(d.category) != -1)
+            if(c.indexOf(d.category.toLowerCase()) != -1)
               col = colors[i];
           });
           return col;
@@ -243,8 +284,10 @@ $(document).ready(function(){
           return "category-box selected";
         })
         .attr("style", function(d, i){
-          return "border-left: " + colors[i] + " solid 4px;"; 
+          return "border-left-width: 3px; border-left-style: solid; border-color: " + colors[i] + ";"; 
         })
+        .append("span")
+        .attr("class", "text-inlay")
         .text(function(d){
           return d;
         });
@@ -257,12 +300,15 @@ $(document).ready(function(){
         selectedCategories: filterSet.length
       }];
 
+
       $("#meta-viz #total").remove();
 
       d3.select("#meta-viz")
         .selectAll("div")
         .data(meta)
         .enter()
+        // .append("div")
+        // .attr("id", "meta-viz")
         .append("div")
         .attr("id", "total")
         .text(function(d){
@@ -270,7 +316,66 @@ $(document).ready(function(){
         });
     }
 
+
+    function renderBarChart(donutData){
+      var margin = {top: 0, right: 0, bottom: 0, left: 0},
+        width = 300 - margin.left - margin.right,
+        height = 150 - margin.top - margin.bottom;
+
+      var x = d3.scale.ordinal()
+          .rangeRoundBands([0, width], .1);
+
+      var y = d3.scale.linear()
+          .range([height, 0]);
+
+      var xAxis = d3.svg.axis()
+          .scale(x)
+          .orient("bottom");
+
+      var yAxis = d3.svg.axis()
+          .scale(y)
+          .orient("left")
+          .ticks(10, "%");
+
+      var svg = d3.select("#bargraph").append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        x.domain(donutData.map(function(d) { return d.name; }));
+        y.domain([0, d3.max(donutData, function(d) { return d.count; })]);
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+          .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Frequency");
+
+        svg.selectAll(".bar")
+            .data(donutData)
+          .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d.name); })
+            .attr("width", x.rangeBand())
+            .attr("y", function(d) { return y(d.count); })
+            .attr("height", function(d) { return height - y(d.count); });
+
+
+    }
   }
+
+
+
 
   // function loadWorld(err, world) {
   //   svg.insert("path", ".graticule")

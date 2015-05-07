@@ -56,24 +56,43 @@
 
 .category-box {
   font-size: 0.85em;
-  width: 107px;
-  height: 53px;
+  width: 16px;
+  height: 16px;
   background-color: #eee;
-  margin: 3px 3px 0 0;
-  padding: 16px 5px;
+  margin: 3px 3px 3px 3px;
   cursor: pointer;
-  float:left;
+  border-radius: 12px;
   transition: all 0.3s ease-in-out;
 }
 
 .selected {
+  border-left-width: 16px !important;
   background-color: #bedded;
+}
+
+.text-inlay {
+  position: absolute;
+  text-transform: capitalize;
+  left: 40px;
+}
+
+.leaflet-bottom {
+  display: none;
 }
 
 #meta-viz {
   font-weight: 300;
-  font-size: 1.5em;
-  margin: 7px 0;
+  margin: 7px 0px;
+}
+h2 {
+  font-weight: bolder;
+}
+.info-inner {
+  border: 3px #efefef solid;
+  border-right-width: 0px !important;
+  border-left-width: 0px !important;
+  padding-top: 10px;
+  height: 260px;
 }
 
 #info {
@@ -97,6 +116,42 @@
   overflow-y: auto;
   /* prevent horizontal scrollbar */
   overflow-x: hidden;
+}
+
+.cardhighlight {
+  margin-bottom: 1px !important;
+}
+
+#searchbox {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+}
+
+
+/* Bar graph */
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
 }
 
 
