@@ -35,6 +35,10 @@ $(document).ready(function(){
     "#ffff99"];
 
 
+  var ifaloc = {};
+  ifaloc.lat = 40.776251;
+  ifaloc.lon = -73.963786;
+
   // UNCOMMENT FOR SVG WORLD
   //-------------------------
   // var width = 940,
@@ -91,7 +95,9 @@ $(document).ready(function(){
           catfreq[a.category]=1;
         else
           catfreq[a.category]++;
+
       });
+
 
       var donutData = [];
 
@@ -102,12 +108,6 @@ $(document).ready(function(){
             count: catfreq[k]
           });
       });
-      // donutData.names = Object.keys(catfreq);
-      // donutData.count = [];
-      // Object.keys(catfreq).forEach(function(k){
-      //   donutData.count.push(catfreq[k]);
-      // });
-      console.log(donutData);
 
       categories = categories.unique();
 
@@ -142,7 +142,19 @@ $(document).ready(function(){
     var alumniDom = alumni;
     var filterSet = categories;
     var tip = tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d.name; });
+    var linesData = [];
+    var lines = g.insert("g")
+      .attr("class", "lines");
 
+    alumniDom.forEach(function(a){
+      if(!isNaN(a.lat) && a.lat!==470)
+        linesData.push({
+          fx: a.lat,
+          fy: a.lon,
+          tx: ifaloc.lat,
+          ty: ifaloc.lon
+        });
+    });
 
     //first render
     renderMap();
@@ -164,7 +176,6 @@ $(document).ready(function(){
         return (filterSet.indexOf(e.category) != -1);
       });
 
-      renderMap();
       renderMeta();
       renderBarChart(donutData);
     });
@@ -177,11 +188,28 @@ $(document).ready(function(){
         d.lon = isNaN(d.lon) ? 0 : d.lon;
 
         var p = map.latLngToLayerPoint(new L.LatLng(d.lat, d.lon));
+
         d.x = p.x;
         d.y = p.y;
 
         return d;
       });
+
+      linesData = linesData.map(function(d){
+
+        var f = map.latLngToLayerPoint(new L.LatLng(d.fx, d.fy));
+        var t = map.latLngToLayerPoint(new L.LatLng(d.tx, d.ty));
+
+        d.from_x = f.x;
+        d.from_y = f.y;
+        d.to_x = t.x;
+        d.to_y = t.y;
+
+        return d;
+
+      });
+      console.log(linesData.length);
+
 
       var lats = alumniDom.map(function(d){
         return d.x;
@@ -201,6 +229,7 @@ $(document).ready(function(){
         .style("top", topLeft[1] - 50 + "px");
 
       g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
+      // lines.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
 
       g.call(tip);
       tip.direction("e");
@@ -270,6 +299,30 @@ $(document).ready(function(){
       g.selectAll("circle.point")
         .data(alumniDom)
         .exit().transition().remove();
+
+
+      lines.selectAll("line")
+        .data(linesData)
+        .enter()
+        .append("line")
+        .attr("class", "connect")
+        .style("stroke", "rgba(0,0,0,1)")
+        .attr("x1", function(d){ return d.from_x; })
+        .attr("y1", function(d){ return d.from_y; })
+        .attr("x2", function(d){ return d.to_x; })
+        .attr("y2", function(d){ return d.to_y; });
+
+      lines.selectAll("line")
+        .data(linesData)
+        .attr("x1", function(d){ return d.from_x; })
+        .attr("y1", function(d){ return d.from_y; })
+        .attr("x2", function(d){ return d.to_x; })
+        .attr("y2", function(d){ return d.to_y; });
+
+      lines.selectAll("line")
+        .data(linesData)
+        .exit()
+        .transition().remove();
 
     }
 
@@ -370,7 +423,19 @@ $(document).ready(function(){
             .attr("y", function(d) { return y(d.count); })
             .attr("height", function(d) { return height - y(d.count); });
 
+    }
 
+
+    function renderLine(linesData){
+      console.log(linesData);
+      g.selectAll("line")
+        .data(linesData)
+        .append("line")
+        .attr("class", "lines")
+        .attr("x1", function(d){ return d.from_x; })
+        .attr("y1", function(d){ return d.from_y; })
+        .attr("x2", function(d){ return d.to_x; })
+        .attr("y2", function(d){ return d.to_y; });
     }
   }
 
