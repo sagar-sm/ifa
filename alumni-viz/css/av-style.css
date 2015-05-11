@@ -100,6 +100,7 @@ h2 {
 }
 
 .name {
+  padding-top: 0.2em;
   font-weight: 300;
   font-size: 1.8em;
 }
@@ -132,11 +133,14 @@ h2 {
 /* Bar graph */
 
 .bar {
-  fill: steelblue;
+  /*fill: steelblue;*/
+  opacity: 1.0;
+  transition: all 0.3s ease-in-out;
 }
 
 .bar:hover {
-  fill: brown;
+  opacity: 0.77;
+  transition: all 0.3s ease-in-out;
 }
 
 .axis {
@@ -154,4 +158,25 @@ h2 {
   display: none;
 }
 
+
+#alumni-info {
+  margin: 0px 0 10px 0;
+  background-color: #fafafal
+}
+
+#profile_img {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.fi-x {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 10px;
+}
+
+.ui-helper-hidden-accessible {
+  display: none;
+}
 

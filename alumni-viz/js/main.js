@@ -12,6 +12,10 @@ Array.prototype.unique = function()
   return r;
 }
 
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 $(document).ready(function(){
 
 
@@ -21,6 +25,31 @@ $(document).ready(function(){
 
   var svg = d3.select(map.getPanes().overlayPane).append("svg");
   var g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+  var bmargin = {top: 0, right: 0, bottom: 0, left: 0},
+    bwidth = 300 - bmargin.left - bmargin.right,
+    bheight = 150 - bmargin.top - bmargin.bottom;
+
+  var bx = d3.scale.ordinal()
+      .rangeRoundBands([0, bwidth], .1);
+
+  var by = d3.scale.linear()
+      .range([bheight, 0]);
+
+  var bxAxis = d3.svg.axis()
+      .scale(bx)
+      .orient("bottom");
+
+  var byAxis = d3.svg.axis()
+      .scale(by)
+      .orient("left")
+      .ticks(10, "%");
+
+  var bar = d3.select("#bargraph").append("svg")
+      .attr("width", bwidth + bmargin.left + bmargin.right)
+      .attr("height", bheight + bmargin.top + bmargin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + bmargin.left + "," + bmargin.top + ")");
 
   var colors = ["#a6cee3",
     "#1f78b4",
@@ -99,11 +128,11 @@ $(document).ready(function(){
       });
 
 
-      var donutData = [];
+      var barData = [];
 
       Object.keys(catfreq).forEach(function(k){
         if(k !== "miscellaneous")
-          donutData.push({
+          barData.push({
             name: k,
             count: catfreq[k]
           });
@@ -120,34 +149,25 @@ $(document).ready(function(){
         select: function(e, ui){
           var i = names.indexOf(ui.item.value);
           var d = alumni[i];
-          $("#alumni-info").html(
-            "<div class=\"large-6 columns\">" +
-              "<img src=\"profile_images/" + d.img_url + "\"></img>" + 
-            "</div>" +
-            "<div class=\"large-6 columns\">" +
-              "<h2 class=\"name\">" + d.name + "</h2>" +
-              "<div class=\"degree\">" + (d.degree? d.degree : "") + "</div>" +
-              "<div class=\"notes\">" + (d.notes? d.notes : "") + "</div>" +
-              "<div class=\"place\">" + (d.place? d.place : "") + "</div>" +
-            "</div>"
-          );
+          renderAlumProfile(d);
         }
       });
 
-      loadAlumni(err, categories, alumni, donutData);
+      loadAlumni(err, categories, alumni, barData);
     });
 
-  function loadAlumni(err, categories, alumni, donutData) {
+  function loadAlumni(err, categories, alumni, _barData) {
 
     var alumniDom = alumni;
     var filterSet = categories;
-    var tip = tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d.name; });
+    var tip  = d3.tip().attr('class', 'd3-tip').html(function(d) { return d.name; });
+    var btip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d.name.capitalizeFirstLetter() + ": " + d.count; });
     var linesData = [];
     var lines = g.insert("g")
       .attr("class", "lines");
 
     alumniDom.forEach(function(a){
-      if(!isNaN(a.lat) && a.lat!==470)
+      if(!isNaN(a.lat) && a.lat!==0)
         linesData.push({
           fx: a.lat,
           fy: a.lon,
@@ -156,14 +176,17 @@ $(document).ready(function(){
         });
     });
 
+    var barData = _barData;
+
     //first render
     renderMap();
     renderCat();
     renderMeta();
-    renderBarChart(donutData);
+    renderBarChart();
 
 
     map.on("viewreset", renderMap);
+
 
     $('.category-box').click(function(){
       $(this).toggleClass('selected');
@@ -176,8 +199,25 @@ $(document).ready(function(){
         return (filterSet.indexOf(e.category) != -1);
       });
 
+      barData = _barData.filter(function(e){
+        return (filterSet.indexOf(e.name) != -1)
+      });
+
+      linesData = [];
+
+      alumniDom.forEach(function(a){
+        if(!isNaN(a.lat) && a.lat!==0)
+          linesData.push({
+            fx: a.lat,
+            fy: a.lon,
+            tx: ifaloc.lat,
+            ty: ifaloc.lon
+          });
+      });
+
+      renderMap();
       renderMeta();
-      renderBarChart(donutData);
+      renderBarChart();
     });
 
     //renders map and points
@@ -208,6 +248,7 @@ $(document).ready(function(){
         return d;
 
       });
+
       console.log(linesData.length);
 
 
@@ -242,7 +283,7 @@ $(document).ready(function(){
         .attr("r",4)
         .attr("class", "point")
         .attr("fill", function(d){
-          var col = '#000000';
+          var col = '#dddddd';
           categories.forEach(function(c, i){
             if(c.indexOf(d.category) != -1)
               col = colors[i];
@@ -256,17 +297,7 @@ $(document).ready(function(){
           return d.y;
         })
         .on("click", function(d){
-          $("#alumni-info").html(
-            "<div class=\"large-6 columns\">" +
-              "<img src=\"profile_images/" + d.img_url + "\"></img>" + 
-            "</div>" +
-            "<div class=\"large-6 columns\">" +
-              "<h2 class=\"name\">" + d.name + "</h2>" +
-              "<div class=\"degree\">" + (d.degree? d.degree : "") + "</div>" +
-              "<div class=\"notes\">" + (d.notes? d.notes : "") + "</div>" +
-              "<div class=\"place\">" + (d.place? d.place : "") + "</div>" +
-            "</div>"
-          );
+          renderAlumProfile(d);
         })
         .on("mouseover", function(d){
           d3.select(this).attr("r", 10);
@@ -306,7 +337,7 @@ $(document).ready(function(){
         .enter()
         .append("line")
         .attr("class", "connect")
-        .style("stroke", "rgba(0,0,0,1)")
+        .style("stroke", "rgba(0,0,0,0.09)")
         .attr("x1", function(d){ return d.from_x; })
         .attr("y1", function(d){ return d.from_y; })
         .attr("x2", function(d){ return d.to_x; })
@@ -369,74 +400,92 @@ $(document).ready(function(){
         });
     }
 
+        
 
-    function renderBarChart(donutData){
-      var margin = {top: 0, right: 0, bottom: 0, left: 0},
-        width = 300 - margin.left - margin.right,
-        height = 150 - margin.top - margin.bottom;
+    function renderBarChart(){
 
-      var x = d3.scale.ordinal()
-          .rangeRoundBands([0, width], .1);
+        // svg.append("g")
+        //     .attr("class", "x axis")
+        //     .attr("transform", "translate(0," + height + ")")
+        //     .call(xAxis);
 
-      var y = d3.scale.linear()
-          .range([height, 0]);
+        // svg.append("g")
+        //     .attr("class", "y axis")
+        //     .call(yAxis)
+        //   .append("text")
+        //     .attr("transform", "rotate(-90)")
+        //     .attr("y", 6)
+        //     .attr("dy", ".71em")
+        //     .style("text-anchor", "end")
+        //     .text("Frequency");
+        bx.domain(barData.map(function(d) { return d.name; }));
+        by.domain([0, d3.max(barData, function(d) { return d.count; })]);
 
-      var xAxis = d3.svg.axis()
-          .scale(x)
-          .orient("bottom");
+        bar.call(btip);
+        btip.direction("e");
+        btip.offset([-40,10]);
 
-      var yAxis = d3.svg.axis()
-          .scale(y)
-          .orient("left")
-          .ticks(10, "%");
-
-      var svg = d3.select("#bargraph").append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        x.domain(donutData.map(function(d) { return d.name; }));
-        y.domain([0, d3.max(donutData, function(d) { return d.count; })]);
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Frequency");
-
-        svg.selectAll(".bar")
-            .data(donutData)
+        bar.selectAll(".bar")
+            .data(barData)
           .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", function(d) { return x(d.name); })
-            .attr("width", x.rangeBand())
-            .attr("y", function(d) { return y(d.count); })
-            .attr("height", function(d) { return height - y(d.count); });
+            .on("mouseover", function(d){
+              btip.show(d);
+            })
+            .on("mouseout", function(d){
+              btip.hide(d);
+            })
+            .transition().duration(200)
+            .attr("fill", function(d) { 
+              var col = '#000000';
+              var i = categories.indexOf(d.name);
+              if(i != -1)
+                col = colors[i];
+              return col;
+            })
+            .attr("x", function(d) { return bx(d.name); })
+            .attr("width", bx.rangeBand())
+            .attr("y", function(d) { return by(d.count); })
+            .attr("height", function(d) { return bheight - by(d.count); });
+
+        bar.selectAll(".bar")
+            .data(barData)
+            .attr("class", "bar")
+            .transition().duration(200)
+            .attr("fill", function(d) { 
+              var col = '#000000';
+              var i = categories.indexOf(d.name);
+              if(i != -1)
+                col = colors[i];
+              return col;
+            })
+            .attr("x", function(d) { return bx(d.name); })
+            .attr("width", bx.rangeBand())
+            .attr("y", function(d) { return by(d.count); })
+            .attr("height", function(d) { return bheight - by(d.count); });
+
+        bar.selectAll(".bar")
+          .data(barData)
+          .exit()
+          .transition().remove(); 
 
     }
 
+  }
 
-    function renderLine(linesData){
-      console.log(linesData);
-      g.selectAll("line")
-        .data(linesData)
-        .append("line")
-        .attr("class", "lines")
-        .attr("x1", function(d){ return d.from_x; })
-        .attr("y1", function(d){ return d.from_y; })
-        .attr("x2", function(d){ return d.to_x; })
-        .attr("y2", function(d){ return d.to_y; });
-    }
+  function renderAlumProfile(d){
+    $("#alumni-info").html(
+      "<div id=\"profile_img\" class=\"large-3 columns\">" +
+        "<img src=\"profile_images/" + d.img_url + "\"></img>" + 
+      "</div>" +
+      "<div class=\"large-9 columns\">" +
+        "<h2 class=\"name\">" + d.name + "</h2>" +
+        "<i class=\"fi-x\"></i>" + 
+        "<div class=\"degree\">" + (d.degree? d.degree : "") + "</div>" +
+        "<div class=\"notes\">" + (d.notes? d.notes : "") + "</div>" +
+        "<div class=\"place\">" + (d.place? d.place : "") + "</div>" +
+      "</div>"
+    );
   }
 
 
