@@ -20,8 +20,8 @@ $(document).ready(function(){
 
 
   L.mapbox.accessToken = 'pk.eyJ1Ijoic3NtIiwiYSI6IkFsRTJFNDAifQ.k7_1MScHyFU44SbXlC3x8w';
-  var map = L.mapbox.map('map', 'ssm.ld63nlnh')
-    .setView([0,0], 2);
+  var map = L.mapbox.map('map', 'ssm.m5hkonen')
+    .setView([30,-50], 3);
 
   var svg = d3.select(map.getPanes().overlayPane).append("svg");
   var g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -102,7 +102,7 @@ $(document).ready(function(){
           aptDate: new Date(+d.AppointmentDate, 0, 1),
           lat: +d.La,
           lon: +d.Lo,
-          place: d.Place,
+          place: d.Workplace,
           notes: d.Notes,
           degree: d.Degree
         };
@@ -280,7 +280,7 @@ $(document).ready(function(){
         .data(alumniDom)
         .enter()
         .append("circle")
-        .attr("r",4)
+        .attr("r",4*map.getZoom())
         .attr("class", "point")
         .attr("fill", function(d){
           var col = '#dddddd';
@@ -317,6 +317,7 @@ $(document).ready(function(){
           });
           return col;
         })
+        .attr("r",4)
         .attr("cx", function(d) {
           return d.x;
         })
@@ -337,7 +338,7 @@ $(document).ready(function(){
         .enter()
         .append("line")
         .attr("class", "connect")
-        .style("stroke", "rgba(0,0,0,0.09)")
+        .style("stroke", "rgba(0,0,0,0.15)")
         .attr("x1", function(d){ return d.from_x; })
         .attr("y1", function(d){ return d.from_y; })
         .attr("x2", function(d){ return d.to_x; })
@@ -486,8 +487,20 @@ $(document).ready(function(){
         "<div class=\"place\">" + (d.place? d.place : "") + "</div>" +
       "</div>"
     );
+    $("#alumni-info").fadeThenSlideToggle();
   }
 
+  $(document).on("click", ".fi-x", function(){
+    $("#alumni-info").fadeThenSlideToggle();
+  });
+
+  jQuery.fn.fadeThenSlideToggle = function(speed, easing, callback) {
+    if (this.is(":hidden")) {
+      return this.slideDown(speed, easing).fadeTo(speed, 1, easing, callback);
+    } else {
+      return this.fadeTo(speed, 0, easing).slideUp(speed, easing, callback);
+    }
+  };
 
 
 
