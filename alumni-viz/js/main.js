@@ -61,7 +61,7 @@ $(document).ready(function(){
     "#ff7f00",
     "#cab2d6",
     "#6a3d9a",
-    "#ffff99"];
+    "#ececec"];
 
 
   var ifaloc = {};
@@ -131,7 +131,7 @@ $(document).ready(function(){
       var barData = [];
 
       Object.keys(catfreq).forEach(function(k){
-        if(k !== "miscellaneous")
+        // if(k !== "miscellaneous")
           barData.push({
             name: k,
             count: catfreq[k]
@@ -438,7 +438,7 @@ $(document).ready(function(){
             })
             .transition().duration(200)
             .attr("fill", function(d) { 
-              var col = '#000000';
+              var col = '#ffffff';
               var i = categories.indexOf(d.name);
               if(i != -1)
                 col = colors[i];
@@ -452,14 +452,14 @@ $(document).ready(function(){
         bar.selectAll(".bar")
             .data(barData)
             .attr("class", "bar")
-            .transition().duration(200)
             .attr("fill", function(d) { 
-              var col = '#000000';
+              var col = '#ffffff';
               var i = categories.indexOf(d.name);
               if(i != -1)
                 col = colors[i];
               return col;
             })
+            .transition().duration(200)
             .attr("x", function(d) { return bx(d.name); })
             .attr("width", bx.rangeBand())
             .attr("y", function(d) { return by(d.count); })
@@ -476,10 +476,10 @@ $(document).ready(function(){
 
   function renderAlumProfile(d){
     $("#alumni-info").html(
-      "<div id=\"profile_img\" class=\"large-3 columns\">" +
+      "<div id=\"profile_img\" class=\"small-3 columns\">" +
         "<img src=\"profile_images/" + d.img_url + "\"></img>" + 
       "</div>" +
-      "<div class=\"large-9 columns\">" +
+      "<div class=\"small-9 columns\">" +
         "<h2 class=\"name\">" + d.name + "</h2>" +
         "<i class=\"fi-x\"></i>" + 
         "<div class=\"degree\">" + (d.degree? d.degree : "") + "</div>" +
