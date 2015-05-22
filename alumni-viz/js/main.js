@@ -233,6 +233,9 @@ $(document).ready(function(){
         d.y = p.y;
 
         return d;
+      }).filter(function(e){
+        if(!(e.lat === 0 && e.lon == 0))
+          return e;
       });
 
       linesData = linesData.map(function(d){
@@ -323,9 +326,6 @@ $(document).ready(function(){
         })
         .attr("cy", function(d) {
           return d.y;
-        })
-        .style("opacity", function(d){
-          return d.lat || d.lon;
         });
 
       g.selectAll("circle.point")
