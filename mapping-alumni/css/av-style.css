@@ -204,5 +204,10 @@ h2 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   margin: 4px 0 0 0;
 }
-
+.ui-state-focus {
+  color: #fff !important;
+  background-color: #7a98ab !important;
+  border: none !important;
+  padding: 3px !important;
+}
 

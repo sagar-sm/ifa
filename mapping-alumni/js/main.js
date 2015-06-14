@@ -493,7 +493,12 @@ $(document).ready(function(){
     //refresh marker
     if(marker)
       map.removeLayer(marker);
-    map.setView([d.lat, d.lon], 15);
+
+    if(d.lat != 0 && d.lon !=0)
+      map.setView([d.lat, d.lon], 15);
+    else
+      map.setView([35,-50], 3);
+    
     marker = L.marker([d.lat, d.lon]);
     map.addLayer(marker);
   }
