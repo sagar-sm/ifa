@@ -1,3 +1,15 @@
+/* ---------------------------------------------
+IFA Alumni Visualization
+------------------------------------------------
+
+Authors:                    Sagar Mohite, Jason Varone
+Github:                     https://github.com/sagar-sm/ifa/
+Developement Version:       https://sagar-sm.github.io/ifa/mapping-alumni/
+Live Version:               http://www.nyu.edu/gsas/dept/fineart/mapping-alumni/
+
+------------------------------------------------*/
+
+//MISC FUNCTIONALITIES
 Array.prototype.unique = function()
 {
   var n = {},r=[];
@@ -12,24 +24,53 @@ Array.prototype.unique = function()
   return r;
 }
 
-
-
-
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+/*-----------------------------------------------*/
 
+//READY
 $(document).ready(function(){
 
-
+  //SETUP MAPBOX
   L.mapbox.accessToken = 'pk.eyJ1Ijoic3NtIiwiYSI6IkFsRTJFNDAifQ.k7_1MScHyFU44SbXlC3x8w';
   var map = L.mapbox.map('map', 'ssm.m5hkonen')
     .setView([35,-50], 3);
 
+
+  //STATE VARIABLES AND CONSTANTS
+  var panelOpen = false; //alumni info panel state
+  var marker; //blue pin marker to be displayed upon alumni select
+  var placeCount = {}; //hashtable for count of alumni in workplaces
+  var radius = 4;
+  var padding = 1;
+  var alumniDom;
+
+  var colors = ["#a6cee3",
+    "#1f78b4",
+    "#b2df8a",
+    "#33a02c",
+    "#fb9a99",
+    "#e31a1c",
+    "#fdbf6f",
+    "#ff7f00",
+    "#cab2d6",
+    "#6a3d9a",
+    "#ececec"];
+
+
+  var ifaloc = {}; //location of NYU IFA
+  ifaloc.lat = 40.776251;
+  ifaloc.lon = -73.963786;
+
+
+
+  //SETUP SVG PANE
   var svg = d3.select(map.getPanes().overlayPane).append("svg");
   var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
+  //SETUP BAR CHART VARIABLES. Variables with a `b` prepended are usually related to the bar chart
   var bmargin = {top: 0, right: 0, bottom: 0, left: 0},
     bwidth = 300 - bmargin.left - bmargin.right,
     bheight = 150 - bmargin.top - bmargin.bottom;
@@ -55,30 +96,8 @@ $(document).ready(function(){
     .append("g")
       .attr("transform", "translate(" + bmargin.left + "," + bmargin.top + ")");
 
-  var panelOpen = false; //alumni info panel state
-  var marker; //blue pin marker to be displayed upon alumni select
-  var placeCount = {}; //hashtable for count of alumni in workplaces
-  var radius = 4;
-  var padding = 1;
-  var alumniDom;
 
-  var colors = ["#a6cee3",
-    "#1f78b4",
-    "#b2df8a",
-    "#33a02c",
-    "#fb9a99",
-    "#e31a1c",
-    "#fdbf6f",
-    "#ff7f00",
-    "#cab2d6",
-    "#6a3d9a",
-    "#ececec"];
-
-
-  var ifaloc = {};
-  ifaloc.lat = 40.776251;
-  ifaloc.lon = -73.963786;
-
+  //LOAD DATA ASYNCHRONOUSLY
   queue()
     .defer(function(url, callback){
       d3.csv(url, function(d){
@@ -113,7 +132,6 @@ $(document).ready(function(){
           catfreq[a.category]++;
 
       });
-
 
       var barData = [];
 
@@ -171,14 +189,12 @@ $(document).ready(function(){
     var barData = _barData;
 
     //first render
-    renderMap();
-    renderCat();
-    renderMeta();
-    renderBarChart();
-
+    renderMap();      //map and points on it
+    renderCat();      //categories checkboxes
+    // renderMeta();     //meta data
+    renderBarChart(); //bar chart
 
     map.on("viewreset", renderMap);
-
 
     $('.category-box').click(function(){
       $(this).toggleClass('selected');
@@ -208,11 +224,11 @@ $(document).ready(function(){
       });
 
       renderMap();
-      renderMeta();
+      // renderMeta();
       renderBarChart();
     });
 
-    //renders map and points
+    //RENDERS MAP, LINES AND POINTS
     function renderMap(){
 
       alumniDom = alumniDom.map(function(d) {
@@ -354,7 +370,7 @@ $(document).ready(function(){
 
     }
 
-    //renders categories
+    //RENDERS CATEGORY CHECKBOXES
     function renderCat(){
       d3.select("#categories-viz")
         .selectAll("div")
@@ -374,6 +390,9 @@ $(document).ready(function(){
         });
     }
 
+
+    //TO RENDER TOTAL ALUMNI CURRENTLY ON MAP
+    //Legacy. this function is no longer used.
     function renderMeta(){
 
       var meta = [{
@@ -388,31 +407,16 @@ $(document).ready(function(){
         .selectAll("div")
         .data(meta)
         .enter()
-        // .append("div")
-        // .attr("id", "meta-viz")
+        .append("div")
+        .attr("id", "meta-viz")
         .append("div")
         .attr("id", "total")
         
     }
-
         
-
+    //RENDER BAR CHART
     function renderBarChart(){
 
-        // svg.append("g")
-        //     .attr("class", "x axis")
-        //     .attr("transform", "translate(0," + height + ")")
-        //     .call(xAxis);
-
-        // svg.append("g")
-        //     .attr("class", "y axis")
-        //     .call(yAxis)
-        //   .append("text")
-        //     .attr("transform", "rotate(-90)")
-        //     .attr("y", 6)
-        //     .attr("dy", ".71em")
-        //     .style("text-anchor", "end")
-        //     .text("Frequency");
         bx.domain(barData.map(function(d) { return d.name; }));
         by.domain([0, d3.max(barData, function(d) { return d.count; })]);
 
@@ -468,6 +472,11 @@ $(document).ready(function(){
 
   }
 
+  //RENDER INFO PANEL
+  /*
+    `d` is the object to be rendered
+    `direct` is a boolean option for bypassing initial placeCount check
+  */
   function renderPanel(d, direct){
     if( placeCount[d.place] > 1 && !direct){
       $("#alumni-info").html(
@@ -501,7 +510,6 @@ $(document).ready(function(){
       renderAlumProfile(d);
     }
 
-
     if( !panelOpen ){
       $("#alumni-info").fadeThenSlideToggle();
       panelOpen = true;
@@ -520,12 +528,14 @@ $(document).ready(function(){
     map.addLayer(marker);
   }
 
+  //UPON ALUMNI NAME CLICK SHOW PROFILE PANEL
   $(document).on("click", ".alum-href", function(e){
     console.log(e.target.innerHTML);
     var d = alumniDom.filter(function(a){ return a.name === e.target.innerHTML; })[0];
     renderAlumProfile(d);
   });
 
+  //RENDERS PROFILE PANEL
   function renderAlumProfile(d){
     $("#alumni-info").html(
       "<div id=\"profile_img\" class=\"small-3 columns\">" +
@@ -541,7 +551,7 @@ $(document).ready(function(){
     );
   }
 
-
+  //CLOSE PANEL
   $(document).on("click", ".fi-x", function(){
     $("#alumni-info").fadeThenSlideToggle();
     panelOpen = false;
@@ -549,6 +559,7 @@ $(document).ready(function(){
       map.removeLayer(marker);
   });
 
+  //ANIMATE PANEL ENTRY/EXIT
   jQuery.fn.fadeThenSlideToggle = function(speed, easing, callback) {
     if (this.is(":hidden")) {
       return this.slideDown(speed, easing).fadeTo(speed, 1, easing, callback);
