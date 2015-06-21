@@ -12,9 +12,13 @@ Array.prototype.unique = function()
   return r;
 }
 
+
+
+
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
 
 $(document).ready(function(){
 
@@ -51,8 +55,12 @@ $(document).ready(function(){
     .append("g")
       .attr("transform", "translate(" + bmargin.left + "," + bmargin.top + ")");
 
-  var panelOpen = false;
-  var marker;
+  var panelOpen = false; //alumni info panel state
+  var marker; //blue pin marker to be displayed upon alumni select
+  var placeCount = {}; //hashtable for count of alumni in workplaces
+  var radius = 4;
+  var padding = 1;
+  var alumniDom;
 
   var colors = ["#a6cee3",
     "#1f78b4",
@@ -71,31 +79,7 @@ $(document).ready(function(){
   ifaloc.lat = 40.776251;
   ifaloc.lon = -73.963786;
 
-  // UNCOMMENT FOR SVG WORLD
-  //-------------------------
-  // var width = 940,
-  //   height = 480;
-
-  // var projection = d3.geo.equirectangular()
-  //   .scale(153)
-  //   .translate([width / 2, height / 2])
-  //   .precision(.1);
-
-  // var path = d3.geo.path()
-  //   .projection(projection);
-
-  // var graticule = d3.geo.graticule();
-  // var svg = d3.select("#viz").append("svg")
-  //   .attr("width", width)
-  //   .attr("height", height);
-
-  // svg.append("path")
-  //   .datum(graticule)
-  //   .attr("class", "graticule")
-  //   .attr("d", path);
-
-
-  queue()//.defer(d3.json, "./data/world-110m.json")
+  queue()
     .defer(function(url, callback){
       d3.csv(url, function(d){
         return {
@@ -152,7 +136,7 @@ $(document).ready(function(){
         select: function(e, ui){
           var i = names.indexOf(ui.item.value);
           var d = alumni[i];
-          renderAlumProfile(d);
+          renderPanel(d, true); //direct option is set to true to bypass all alumni
         }
       });
 
@@ -161,9 +145,14 @@ $(document).ready(function(){
 
   function loadAlumni(err, categories, alumni, _barData) {
 
-    var alumniDom = alumni;
+    alumniDom = alumni;
     var filterSet = categories;
-    var tip  = d3.tip().attr('class', 'd3-tip').html(function(d) { return d.name; });
+    var tip  = d3.tip().attr('class', 'd3-tip').html(function(d) { 
+      if(placeCount[d.place] > 1)
+        return d.place;
+      else
+        return d.name; 
+    });
     var btip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d.name.capitalizeFirstLetter() + ": " + d.count; });
     var linesData = [];
     var lines = g.insert("g")
@@ -283,7 +272,7 @@ $(document).ready(function(){
         .data(alumniDom)
         .enter()
         .append("circle")
-        .attr("r",4*map.getZoom())
+        .attr("r", radius)
         .attr("class", "point")
         .attr("fill", function(d){
           var col = '#dddddd';
@@ -293,14 +282,20 @@ $(document).ready(function(){
           });
           return col;
         })
-        .attr("cx", function(d) {
+        .attr("cx", function(d){
+          if(!placeCount[d.place]) {
+            placeCount[d.place] = 1;
+          }
+          else {
+            placeCount[d.place]++;
+          }
           return d.x;
         })
-        .attr("cy", function(d) {
+        .attr("cy", function(d){
           return d.y;
         })
         .on("click", function(d){
-          renderAlumProfile(d);
+          renderPanel(d);
         })
         .on("mouseover", function(d){
           d3.select(this).attr("r", 10);
@@ -311,6 +306,7 @@ $(document).ready(function(){
           tip.hide(d);
         });
 
+        console.log(placeCount);
       g.selectAll("circle.point")
         .data(alumniDom) 
         .attr("fill", function(d){
@@ -320,7 +316,7 @@ $(document).ready(function(){
           });
           return col;
         })
-        .attr("r",4)
+        .attr("r", radius)
         .attr("cx", function(d) {
           return d.x;
         })
@@ -472,19 +468,40 @@ $(document).ready(function(){
 
   }
 
-  function renderAlumProfile(d){
-    $("#alumni-info").html(
-      "<div id=\"profile_img\" class=\"small-3 columns\">" +
-        "<img src=\"profile_images/" + d.img_url + "\"></img>" + 
-      "</div>" +
-      "<div class=\"small-9 columns\">" +
-        "<h2 class=\"name\">" + d.name + "</h2>" +
+  function renderPanel(d, direct){
+    if( placeCount[d.place] > 1 && !direct){
+      $("#alumni-info").html(
+        "<div class=\"small-12 columns\">" +
+        "<h2 class=\"cumul\">" + placeCount[d.place] + " alumni who work at " + d.place + "</h2>" +
+        // "<p class=\"subheader\">Select to view details</p>" +
         "<i class=\"fi-x\"></i>" + 
-        "<div class=\"degree\">" + (d.degree? d.degree : "") + "</div>" +
-        "<div class=\"notes\">" + (d.notes? d.notes : "") + "</div>" +
-        "<div class=\"place\">" + (d.place? d.place : "") + "</div>" +
-      "</div>"
-    );
+        "</div>"
+      );
+      var list_col1 = $("<div class=\"cumul small-4 columns\"></div>");
+      var list_col2 = $("<div class=\"cumul small-4 columns\"></div>");
+      var list_col3 = $("<div class=\"cumul small-4 columns\"></div>");
+      var cumul = alumniDom.filter(function(e){
+        return (e.place === d.place);
+      });
+
+      for (var i = 0; i < cumul.length; i+=3) {
+        list_col1.append("<div class=\"alum-href\">" + cumul[i].name + "</div>");
+        if(i < cumul.length - 1)
+          list_col2.append("<div class=\"alum-href\">" + cumul[i+1].name + "</div>");
+        if(i < cumul.length - 2)
+          list_col3.append("<div class=\"alum-href\">" + cumul[i+2].name + "</div>");
+      };
+
+      $("#alumni-info").append(list_col1);
+      $("#alumni-info").append(list_col2);
+      $("#alumni-info").append(list_col3);
+
+    }
+    else{
+      renderAlumProfile(d);
+    }
+
+
     if( !panelOpen ){
       $("#alumni-info").fadeThenSlideToggle();
       panelOpen = true;
@@ -503,6 +520,28 @@ $(document).ready(function(){
     map.addLayer(marker);
   }
 
+  $(document).on("click", ".alum-href", function(e){
+    console.log(e.target.innerHTML);
+    var d = alumniDom.filter(function(a){ return a.name === e.target.innerHTML; })[0];
+    renderAlumProfile(d);
+  });
+
+  function renderAlumProfile(d){
+    $("#alumni-info").html(
+      "<div id=\"profile_img\" class=\"small-3 columns\">" +
+        "<img src=\"profile_images/" + d.img_url + "\"></img>" + 
+      "</div>" +
+      "<div class=\"small-9 columns\">" +
+        "<h2 class=\"name\">" + d.name + "</h2>" +
+        "<i class=\"fi-x\"></i>" + 
+        "<div class=\"degree\">" + (d.degree? d.degree : "") + "</div>" +
+        "<div class=\"notes\">" + (d.notes? d.notes : "") + "</div>" +
+        "<div class=\"place\">" + (d.place? d.place : "") + "</div>" +
+      "</div>"
+    );
+  }
+
+
   $(document).on("click", ".fi-x", function(){
     $("#alumni-info").fadeThenSlideToggle();
     panelOpen = false;
@@ -517,22 +556,5 @@ $(document).ready(function(){
       return this.fadeTo(speed, 0, easing).slideUp(speed, easing, callback);
     }
   };
-
-
-
-  // function loadWorld(err, world) {
-  //   svg.insert("path", ".graticule")
-  //     .datum(topojson.feature(world, world.objects.land))
-  //     .attr("class", "land")
-  //     .attr("d", path);
-
-  //   svg.insert("path", ".graticule")
-  //     .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
-  //     .attr("class", "boundary")
-  //     .attr("d", path);
-  // }
-
-  // d3.select(self.frameElement).style("height", height + "px");
-
 
 });

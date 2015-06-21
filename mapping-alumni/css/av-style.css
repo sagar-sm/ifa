@@ -191,6 +191,20 @@ h2 {
   color: #666;
 }
 
+.alum-href {
+  padding: 3px;
+  margin: 2px 0px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.alum-href:hover {
+  background-color: #efefef;
+  transition: all 0.3s ease-in-out;
+}
+
+
+
 .ui-helper-hidden-accessible {
   display: none;
 }
