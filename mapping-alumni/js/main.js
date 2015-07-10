@@ -4,7 +4,7 @@ IFA Alumni Visualization
 
 Authors:                    Sagar Mohite, Jason Varone
 Github:                     https://github.com/sagar-sm/ifa/
-Developement Version:       https://sagar-sm.github.io/ifa/mapping-alumni/
+Developement Version:       https://sagar-sm.github.io/ifa/mapping-alumni/         (on branch gh-pages)
 Live Version:               http://www.nyu.edu/gsas/dept/fineart/mapping-alumni/
 
 ------------------------------------------------*/
@@ -58,6 +58,9 @@ $(document).ready(function(){
     "#cab2d6",
     "#6a3d9a",
     "#ececec"];
+
+var placeColor = "#777777",
+    placeBorder = "#ffffff";
 
 
   var ifaloc = {}; //location of NYU IFA
@@ -290,14 +293,6 @@ $(document).ready(function(){
         .append("circle")
         .attr("r", radius)
         .attr("class", "point")
-        .attr("fill", function(d){
-          var col = '#dddddd';
-          categories.forEach(function(c, i){
-            if(c.indexOf(d.category) != -1)
-              col = colors[i];
-          });
-          return col;
-        })
         .attr("cx", function(d){
           if(!placeCount[d.place]) {
             placeCount[d.place] = 1;
@@ -309,6 +304,22 @@ $(document).ready(function(){
         })
         .attr("cy", function(d){
           return d.y;
+        })
+        .style("fill", function(d){
+          var col = placeColor;
+
+          if(placeCount[d.place] > 1)
+            categories.forEach(function(c, i){
+              if(c.indexOf(d.category) != -1)
+                col = colors[i];
+            });
+          return col;
+        })
+        .style("stroke", function(d){
+          if(placeCount[d.place] > 1)
+            return 'none';
+          else
+            return placeBorder;
         })
         .on("click", function(d){
           renderPanel(d);
@@ -322,7 +333,6 @@ $(document).ready(function(){
           tip.hide(d);
         });
 
-        console.log(placeCount);
       g.selectAll("circle.point")
         .data(alumniDom) 
         .attr("fill", function(d){
